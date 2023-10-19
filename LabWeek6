@@ -1,0 +1,139 @@
+/*
+It ----> input (Data) ----> process ----> output
+Sources (User ----> Console, GUI)
+Files ----> How many different type of files we have in general?
+    1) Text file (String)
+    2) Data files ----> converting data into binaries through a process called serialization
+        "Diego" -----> 101010101010110101010
+        then you can store that into a binary file
+        then you revive it back to the original form ----> binary to whatever it was
+        this process is called deserialization
+        **** THIS PROCESS IS GOOD FOR COMPLEX DATA SUCH AS LIST, ARRAYS, OBJECTS, ....
+        **** Deserialization somethings need a cypher!
+Databases
+
+// FILE, FileWriter, FileReader, StreamReader, StreamWriter
+ */
+
+import java.io.*;
+import java.util.Scanner;
+
+public class Main{
+    // Moved scanner to the main and made it static which can be globally shared between functions
+    Scanner keyboard = new Scanner(System.in);
+    public static void CreateAFile() throws Exception{
+        String file = "demo.txt"; // created in the same directory as the java file
+        File fileObj = new File(file); // create object
+        // which creates a bridge between file and the script
+        // create a file and return true if its successful
+        if(fileObj.createNewFile()){
+            System.out.println("The file is created successfully!");
+        }
+        else {
+            System.out.println("IT failed to create a file");
+        }
+    }
+    public static void writeToAFile(){
+        try{
+            // creates a fileObject which opens/creates file.
+            FileWriter fileWriter = new FileWriter("demo2.txt");
+            fileWriter.write("\nDiego");
+            fileWriter.write("\nNelson");
+            fileWriter.write("\nAli");
+            fileWriter.write(Integer.toString(56));
+
+            fileWriter.close();
+                // close the file, because only one application at a time can use the file.
+                // information may not be saved if it's not closed
+            System.out.println("Information is recorded!");
+        }
+        catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+    public static void readFromFile(){
+        String out = "";
+        try{
+            FileReader fr = new FileReader("demo2.txt");
+            while(fr.ready()){
+                out += (char) fr.read();
+            }
+            System.out.println(out);
+            String[] str = out.split("\n");
+            double add = 0;
+            for (String s: str){
+                add += Double.parseDouble(s);
+            }
+            System.out.println("----------------");
+            System.out.printf("Totaal Sales $f", add);
+        }
+        catch(FileNotFoundException e){
+            System.out.println("File does not exists!");
+        }
+        catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+    public static void menu(){
+        System.out.println("---------- Sales file recorder ----------");
+        System.out.println(" 1 - Enter sales figure into new file");
+        System.out.println(" 2 - Adding sales to an existing files");
+        System.out.println(" 3 - Display sales information(total sales, avg sales) from the file");
+        System.out.println(" 4 - Exit program");
+
+    }
+    public static void main(String[] args) throws Exception{
+        // CreateAfile();
+        // writeToAFile();
+        // readFromFile();
+        // readFileScanner();
+        String choice;
+        while(true){
+            menu();
+            choice = keyboard.nextLine();
+
+            if (choice.equals("1")) writeSalesToFile();
+            else if (choice.equals("2")) writeSalesToExistingFile();
+            else if (choice.equals("3")) displaySales();
+            else if (choice.equals("4")) break;
+        }
+
+    }
+    private static void displaySales(){
+
+    }
+    private static void writeSalesToExistingFile(){
+
+    }
+    private static void writeSalesToFile() throws IOException{
+        System.out.println("Enter file name: " );
+        String name = keyboard.nextLine() + ".txt";
+        Filewriter fw = new FileWriter(name);
+        System.out.println("How many sales figure you want to record: ");
+        int nSales = Integer.parseInt(keyboard.nextLine());
+        for (int i = 0; i < nSales; i++){
+            System.out.printf("Enter the sales # %d", (i+1));
+            fw.write(keyboard.nextLine());
+        }
+        fw.close();
+
+    }
+    private static void readFileScanner(){
+        File file = new File("demo2.txt");
+        try{
+            Scanner fileScanner = new Scanner(file);
+            double add = 0;
+            double sales = 0;
+            while (fileScanner.hasNext()){
+                sales = fileScanner.nextDouble();
+                System.out.printf("$ %.2f", sales);
+                add += sales;
+            }
+            System.out.println("Total sales is " + add);
+
+        }
+        catch(FileNotFoundException e){
+            throw new RuntimeException(e);
+        }
+    }
+}
