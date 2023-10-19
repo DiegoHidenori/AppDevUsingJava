@@ -1,0 +1,296 @@
+// Keep record of each students courses, and record of each courses information, including
+// contents, weights of each content, ...
+
+// Model for student data (Class)
+// UML
+// Name :Student
+// Properties :ID, Address, Marks, Courses
+// Avg(), status() ...
+
+// Address:
+    // stdNumber
+    // stdName ...
+// Course:
+    // name
+    // content = []
+    // weight = []
+
+
+import java.util.Scanner;
+
+public class Main{
+    public static void main(String[] args){
+        System.out.println("-------Lecture Week 3-------");
+        // Mainly arrays
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter size of array: ");
+        int arraySize = scanner.nextInt();
+        String[] array = new String[arraySize];
+        scanner.nextLine();
+
+        for (int i = 0; i < arraySize; i++){
+            System.out.print("Enter a name: ");
+            String name = scanner.nextLine();
+            array[i] = name;
+        }
+        for (String name: array) {
+            System.out.println(name);
+        }
+
+        int ex1 = 10;
+        int[] ex2 = new int[5];
+        System.out.println(ex1);
+        for (int chimi : ex2) {
+            System.out.println(chimi);
+        }
+        z(ex1, ex2);
+        System.out.println("After change:");
+        System.out.println(ex1); // item in ex1 doesn't change because it's a copy of original value, so it only changes local variable
+        for (int changa : ex2) { // items in ex2 change because it is a reference type (reference to original value)
+            System.out.println("New number is " + changa);
+        }
+
+        scanner.close();
+        /*
+        Address a1 = new Address(1, "Yonge Street", "Toronto", "Ontario", "A0A 0A0");
+        System.out.println(a1);
+        System.out.println(a1.toString());
+
+        Course java = new Course("Java", new String[]{"test1","test2"}, new float[]{0.5f,0.5f});
+        java.setStudentMarks(new double[]{100, 78});
+        Course cSharp = new Course("C#", new String[]{"test1", "test2", "test3"}, new float[]{0.25f, 0.4f, 0.35f});
+        cSharp.setStudentMarks(new double[]{35, 67, 87});
+
+        Student std1 = new Student(100100100, "Diego", a1, new Course[]{java, cSharp});
+        // System.out.println(std1);
+        // System.out.println(java);
+
+         */
+    }
+    public static void z(int number, int[] numbers) {
+        number = 7;
+        for (int i = 0, lv = 0; i < numbers.length; i++, lv+=5) {
+            numbers[i] = lv;
+        }
+    }
+}
+import java.util.Arrays;
+
+public class Student {
+    private int stdID;
+    private String name;
+    private Address add; // Aggregation of the classes
+    private Course[] courses;
+    private double[] finalMarks; // This will be created later
+
+    public int getStdID() {
+        return stdID;
+    }
+
+    public void setStdID(int stdID) {
+        this.stdID = stdID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAdd() {
+        return add;
+    }
+
+    public void setAdd(Address add) {
+        this.add = add;
+    }
+
+    public Course[] getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Course[] courses) {
+        this.courses = courses;
+    }
+
+    public double[] getFinalMarks() {
+        return finalMarks;
+    }
+
+    public void setFinalMarks(double[] finalMarks) {
+        this.finalMarks = finalMarks;
+    }
+
+    public Student(int stdID, String name, Address add, Course[] courses) {
+        this.stdID = stdID;
+        this.name = name;
+        this.add = add;
+        this.courses = courses;
+        // How do I set the array of final marks?
+        finalMarkCalculation();
+    }
+
+    private void finalMarkCalculation(){
+        this.finalMarks = new double[courses.length]; // making the final marks array
+        double[] marks; float[] weight; String[] content; double fmark;
+        // parallel with courses
+        for(int i = 0; i < courses.length; i++){
+            marks = courses[i].getStudentMarks(); // array of marks
+            content = courses[i].getCourseContent();
+            weight = courses[i].getWeight();
+            fmark = 0;
+            for (int j = 0; j < marks.length; j++){
+                fmark += weight[j] * marks[j];
+                System.out.println(marks[j]);
+            }
+            finalMarks[i] = fmark;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "stdID=" + stdID +
+                ", name='" + name + '\'' +
+                ", add=" + add +
+                ", courses=" + Arrays.toString(courses) +
+                ", finalMarks=" + Arrays.toString(finalMarks) +
+                '}';
+    }
+}
+import java.util.Arrays;
+
+public class Course {
+    private String courseName;
+    private String[] courseContent; // P
+    private double[] studentMarks; // P
+    private float[] weight; //
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String[] getCourseContent() {
+        return courseContent;
+    }
+
+    public void setCourseContent(String[] courseContent) {
+        this.courseContent = courseContent;
+    }
+
+    public double[] getStudentMarks() {
+        return studentMarks;
+    }
+
+    public void setStudentMarks(double[] studentMarks) {
+        this.studentMarks = studentMarks;
+    }
+
+    public float[] getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float[] weight) {
+        this.weight = weight;
+    }
+
+    public Course(String courseName, String[] courseContent, double[] studentMarks, float[] weight) {
+        if (courseContent.length != weight.length && weight.length != studentMarks.length){
+            throw new IllegalMonitorStateException("The sie of arrays won't match!");
+        }
+        this.courseName = courseName;
+        this.courseContent = courseContent;
+        this.studentMarks = studentMarks;
+        this.weight = weight;
+    }
+
+    public Course(String courseName, String[] courseContent, float[] weight) {
+        if (courseContent.length != weight.length)
+            throw new IllegalMonitorStateException("The size of arrays won't match!");
+        this.courseName = courseName;
+        this.courseContent = courseContent;
+        this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseName='" + courseName + '\'' +
+                ", courseContent=" + Arrays.toString(courseContent) +
+                ", studentMarks=" + Arrays.toString(studentMarks) +
+                ", weight=" + Arrays.toString(weight) +
+                '}';
+    }
+}
+public class Address {
+    // Encapsulation?
+    private int streetNumber;
+    private String streetName;
+    private String city;
+    private String province;
+    private String postalCode;
+
+    public Address(int streetNumber, String streetName, String city, String province, String postalCode) {
+        this.streetNumber = streetNumber;
+        this.streetName = streetName;
+        this.city = city;
+        this.province = province;
+        this.postalCode = postalCode;
+    }
+
+    public int getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(int streetNumber) {
+        this.streetNumber = streetNumber;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Address:" +
+                "\nStreetNumber = " + streetNumber +
+                "\nStreetName = " + streetName +
+                "\nCity = " + city +
+                "\nProvince = " + province +
+                "\nPostalCode = " + postalCode;
+    }
+}
