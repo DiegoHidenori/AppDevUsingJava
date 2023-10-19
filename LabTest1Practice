@@ -1,0 +1,159 @@
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args){
+        System.out.println("Hello, testing");
+        /*
+        String[] course1Assess = {"LabTest", "Midterm", "Final"};
+        float[] course1Weight = {0.25f, 0.50f, 0.25f};
+        String[] course2Assess = {"LabTest", "Midterm", "Final"};
+        float[] course2Weight = {0.30f, 0.40f, 0.30f};
+        */
+
+        Course COMP2130 = new Course("Java", new String[]{"LabTest", "Midterm", "Final"}, new float[]{0.25f, 0.50f, 0.25f},
+                new double[]{91,74,28});
+        Course COMP1230 = new Course("PHP", new String[]{"LabTest", "Midterm", "Final"}, new float[]{0.30f, 0.40f, 0.30f},
+                new double[]{89,88,90});
+
+        //Course[] cc = {COMP2130, COMP1230};
+
+        Student student1 = new Student(101472472, "Diego", new Course[]{COMP2130, COMP1230});
+
+        System.out.println(COMP2130);
+        System.out.println("\n");
+        System.out.println(student1);
+    }
+}
+import java.util.Arrays;
+public class Student {
+    private int studentID;
+    private String name;
+    private Course[] courses;
+    private double[] coursesFMarks;
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public void setStudentID(int studentID) {
+        this.studentID = studentID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Course[] getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Course[] courses) {
+        this.courses = courses;
+    }
+
+    public double[] getCoursesFMarks() {
+        return coursesFMarks;
+    }
+
+    public void setCoursesFMarks(double[] coursesFMarks) {
+        this.coursesFMarks = coursesFMarks;
+    }
+
+    public Student(int id, String name, Course[] courses) {
+        studentID = id;
+        this.name = name;
+        this.courses = courses;
+
+        courseFinalMarksCalc();
+    }
+    private void courseFinalMarksCalc() {
+        this.coursesFMarks = new double[courses.length];
+        String[] assess;
+        float[] weight;
+        double[] marks;
+        double fmark;
+
+        for(int i = 0; i < courses.length; i++) {
+            assess = courses[i].getCourseAssessments();
+            weight = courses[i].getCourseWeights();
+            marks = courses[i].getCourseMarks();
+            fmark = 0;
+            for(int j = 0; j < marks.length; j++) {
+                fmark += weight[i] * marks[j];
+                System.out.println(marks[j]);
+            }
+            coursesFMarks[i] = fmark;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Student Info: ---" +
+                "\n StudentId: " + studentID +
+                "\n Name: " + name +
+                "\n Courses: " + Arrays.toString(courses) +
+                "\n Course Marks: " + Arrays.toString(coursesFMarks);
+    }
+}
+import java.util.Arrays;
+public class Course {
+    private String courseName;
+    private String[] courseAssessments;
+    private double[] courseMarks;
+    private float[] courseWeights;
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String[] getCourseAssessments() {
+        return courseAssessments;
+    }
+
+    public void setCourseAssessments(String[] courseAssessments) {
+        this.courseAssessments = courseAssessments;
+    }
+
+    public double[] getCourseMarks() {
+        return courseMarks;
+    }
+
+    public void setCourseMarks(double[] courseMarks) {
+        this.courseMarks = courseMarks;
+    }
+
+    public float[] getCourseWeights() {
+        return courseWeights;
+    }
+
+    public void setCourseWeights(float[] courseWeights) {
+        this.courseWeights = courseWeights;
+    }
+    public Course(String name, String[] assess, float[] weights) {
+        courseName = name;
+        courseAssessments = assess;
+        courseWeights = weights;
+    }
+    public Course(String name, String[] assess, float[] weights, double[] marks) {
+        courseName = name;
+        courseAssessments = assess;
+        courseWeights = weights;
+        courseMarks = marks;
+    }
+
+    @Override
+    public String toString() {
+        return "Course Info ---" +
+                "|| Name: " + courseName +
+                " || Assessments: " + Arrays.toString(courseAssessments) +
+                " || Weights: " + Arrays.toString(courseWeights) +
+                " || Marks: " + Arrays.toString(courseMarks);
+    }
+}
