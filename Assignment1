@@ -1,0 +1,267 @@
+import java.util.Scanner;
+import java.time.LocalDate;
+
+public class Main{
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Hello, welcome to the program!");
+        System.out.print("Please enter the size of the Library you wish to create: " );
+        int librarySize = getValidIntegerInput(scanner);
+        Library library = new Library(librarySize);
+        System.out.println("A library with size " + librarySize + " has been created!");
+
+        while (true){
+            System.out.println("\nWhat would you like to do now?");
+            System.out.println("1) Add a book");
+            System.out.println("2) Borrow a book");
+            System.out.println("3) Return a book");
+            System.out.println("4) Display all books in library");
+            System.out.println("5) Display books borrowed last 7 days");
+            System.out.println("6) Exit program");
+            System.out.print("User: ");
+            int user = getValidIntegerInput(scanner);
+            System.out.println();
+            String userTitle, userAuthor, userISBN;
+            switch(user){
+                case 1:
+                    System.out.print("Title of book: ");
+                    userTitle = scanner.nextLine();
+                    System.out.print("Name of author: ");
+                    userAuthor = scanner.nextLine();
+                    System.out.print("ISBN code: ");
+                    userISBN = scanner.nextLine();
+                    library.addBook(userTitle, userAuthor, userISBN);
+                    break;
+                case 2:
+                    System.out.print("Enter ISBN code: ");
+                    userISBN = scanner.nextLine();
+                    library.borrowBook(userISBN);
+                    break;
+                case 3:
+                    System.out.print("Enter ISBN code: ");
+                    userISBN = scanner.nextLine();
+                    library.returnBook(userISBN);
+                    break;
+                case 4:
+                    String allBooks = library.displayAllBooks();
+                    System.out.println(allBooks);
+                    break;
+                case 5:
+                    displayBooksLast7Days(library);
+                    break;
+                case 6:
+                    System.out.println("*** Exiting program ... ***");
+                    scanner.close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice...");
+                    break;
+            }
+        }
+    }
+    private static int getValidIntegerInput(Scanner scanner){
+        while (!scanner.hasNextInt()){
+            scanner.next();
+            System.out.println("Invalid input. Enter a valid integer...");
+        }
+        int input = scanner.nextInt();
+        scanner.nextLine();
+        return input;
+    }
+    public static void displayBooksLast7Days(Library lib){
+        LocalDate currentDate = LocalDate.now();
+        LocalDate pastWeek = currentDate.minusDays(7);
+
+        System.out.println("*** Books borrowed last 7 days ***");
+        for (int i = 0; i < lib.currentCount; i++){
+            Book book = lib.books[i];
+            if ((book.getBorrowed()) || (book.getBorrowDate() != null) && (book.getBorrowDate().isAfter(pastWeek))){
+                System.out.println(book.displayInfo());
+            }
+        }
+    }
+}
+public class Book {
+    // Set the attributes to private, so they can't be changed directly
+    private String title;
+    private String author;
+    private String ISBN;
+    private boolean isBorrowed;
+    private LocalDate borrowDate;
+
+    // Class constructor. Set the initial values of borrowed to false since you can't borrow something that isn't
+    // in the library yet
+    public Book(String title, String author, String ISBN){
+        this.title = title;
+        this.author = author;
+        this.ISBN = ISBN;
+        isBorrowed = false;
+        borrowDate = null;
+    }
+
+    // Used setters to change the values of the isBorrowed and borrowDate attributes since it's set to private
+    public void borrowBook(){
+        setBorrowed(true);
+        setBorrowDate(LocalDate.now());
+    }
+
+    // returnBook method that uses setter to change the value of isBorrowed attribute
+    public void returnBook(){
+        setBorrowed(false);
+    }
+
+    // Used getters to display the information
+    public String displayInfo(){
+        String s = "\nTitle: " + getTitle();
+        s += "\nAuthor: " + getAuthor();
+        s += "\nISBN: " + getISBN();
+        s += "\nIs Currently Borrowed: " + getBorrowed();
+        s += "\nLast Borrow Date: " + getBorrowDate();
+        return s;
+    }
+
+    // Getters and Setters
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
+
+    public boolean getBorrowed() {
+        return isBorrowed;
+    }
+
+    public void setBorrowed(boolean borrowed) {
+        isBorrowed = borrowed;
+    }
+
+    public LocalDate getBorrowDate() {
+        return borrowDate;
+    }
+
+    public void setBorrowDate(LocalDate borrowDate) {
+        this.borrowDate = borrowDate;
+    }
+
+    // Overloaded the toString to print the book object information
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", ISBN='" + ISBN + '\'' +
+                ", isBorrowed=" + isBorrowed +
+                ", borrowDate=" + borrowDate +
+                '}';
+    }
+}
+import java.util.Arrays;
+public class Library {
+    // Library attributes
+    Book[] books;
+    int maxBooks;
+    int currentCount;
+
+    // Library constructor
+    public Library(int max){
+        maxBooks = max;
+        books = new Book[max];
+        currentCount = 0;
+    }
+
+    // addBook method
+    public void addBook(String title, String author, String ISBN){
+        // If condition checks if the capacity has been reached
+        if (currentCount >= maxBooks){
+            System.out.println("\nBook could not be added because the capacity has been reached :(");
+            return;
+        }
+        for (int i = 0; i < currentCount; i++){
+            if (books[i].getISBN().equals(ISBN)){
+                System.out.println("\nISBN code inputted already exists");
+                System.out.println("Book could not be added... :( sad emoji");
+                return;
+            }
+        }
+        books[currentCount] = new Book(title, author, ISBN);
+        currentCount++;
+        System.out.println("Book has been successfully added! :)");
+    }
+
+    // borrowBook method
+    public void borrowBook(String ISBN){
+        // for loop that goes through all the elements that are currently in the array (in a way)
+        for (int i = 0; i < currentCount; i++){
+            // if condition finds the book with the correct ISBN code
+            if (books[i].getISBN().equals(ISBN)){
+                if (!books[i].getBorrowed()){
+                    books[i].borrowBook();
+                    System.out.println("\nBook (ISBN: " + ISBN + ") has been successfully borrowed!");
+                }
+                else{
+                    System.out.println("\nBook (ISBN: " + ISBN + ") is currently borrowed to someone else");
+                }
+                // return keyword to exit loop once the correct book has been found
+                return;
+            }
+        }
+        System.out.println("ISBN code inputted does not match with any book in our library... >:(");
+    }
+
+    // returnBook method
+    public void returnBook(String ISBN){
+        for (int i = 0; i < currentCount; i++){
+            if (books[i].getISBN().equals(ISBN)){
+                // if condition checks if the book is currently borrowed
+                if (books[i].getBorrowed()){
+                    books[i].returnBook();
+                    System.out.println("\nBook (ISBN: " + ISBN + ") has been successfully returned!");
+                }
+                else{
+                    System.out.println("\nBook (ISBN: " + ISBN + ") is not currently borrowed so it cannot be returned");
+                }
+                return;
+            }
+        }
+        System.out.println("ISBN code inputted does not match with any book in our library... >:(");
+    }
+
+    // displayAllBooks method
+    public String displayAllBooks(){
+        String s = "***** Books Info *****\n";
+        // for loop calls the displayInfo method from each object in the array
+        for (int i = 0; i < currentCount; i++){
+            s += "\n" + books[i].displayInfo();
+        }
+        return s;
+    }
+
+    // overriden toString method
+    @Override
+    public String toString() {
+        return "Library{" +
+                "books=" + Arrays.toString(books) +
+                ", maxBooks=" + maxBooks +
+                ", currentCount=" + currentCount +
+                '}';
+    }
+}
