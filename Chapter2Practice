@@ -1,0 +1,25 @@
+import java.util.Scanner;
+public class Main{
+    public static void main(String[] args){
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter an integer: ");
+        int int1 = input.nextInt();
+        input.nextLine();
+
+        System.out.print("Enter a String: ");
+        String str1 = input.nextLine();
+
+        System.out.print("Enter a double: ");
+        double doub1 = input.nextDouble();
+        input.nextLine();
+
+        System.out.print("Enter a character: ");
+        char char1 = input.next().charAt(0);
+
+        System.out.print("Enter a float: ");
+        float float1 = input.nextFloat();
+
+        input.close();
+    }
+}
