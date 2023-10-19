@@ -1,0 +1,18 @@
+public class Main {
+    public static void main(String[] args) {
+        String[] personFirst = {"Diego", "Illia", "Nelson"};
+        String[] personLast = {"Tsukayama", "Konik", "Ortiz"};
+        String[] books = {"Fav", "SecFav", "ThiFav", "FouFav"};
+        String[][] favBooks = {
+                {"Red Queen", "King's Cage", "War Storm", "Harry Potter"},
+                {"Horse", "Car", "Phones", "IDK"},
+                {"Bags", "Drugs", "Giraffe", "Lion"}
+        };
+        for (int i = 0; i < personFirst.length; i++) {
+            System.out.printf("\nBooks for %s %s\n", personFirst[i], personLast[i]);
+            for (int j = 0; j < books.length; j++) {
+                System.out.printf("%s's %s  ------> %s\n", personFirst[i], books[j], favBooks[i][j]);
+            }
+        }
+    }
+}
