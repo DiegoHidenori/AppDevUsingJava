@@ -1,0 +1,167 @@
+import java.util.Scanner;
+
+/*
+Object oriented database (Classes as Model for a database)
+great way of implementing database:
+    1) Advantage over DBMS?? fast, easy to implement, great for small business
+    2) Disadvantage: It's in RAM, so data is not stored.
+ */
+public class Main {
+    public static void main(String[] args) {
+        Employee a = new Employee("Diego");
+        Employee b = new Employee("Tekken");
+        FullTime c = new FullTime("Connor", 200000);
+        PartTime d = new PartTime("Ben", 50000, 30);
+        Commission e = new Commission("Lola", 40000, 10);
+
+        // Inheritancce ---->
+
+        Employee[] emp = new Employee[]{a, b, c, d, e};
+
+        for (Employee x: emp) {
+            System.out.println(x);
+        }
+        System.out.println(a);
+        System.out.println(b);
+    }
+    static void printPayroll(payroll[] e) {
+        double sum = 0;
+        for (payroll emp: e) {
+            System.out.printf(" $ %0.2f", emp.payroll());
+            sum += emp.payroll();
+        }
+        System.out.printf("Total payable $ %0.2f\n", sum);
+    }
+}
+public class FullTime extends Employee implements payroll{
+    // id, name ----> employee
+    private double annualSalary;
+    public FullTime(String name, double annualSalary){
+        super(name); // super() ----> super constructor
+        this.annualSalary = annualSalary;
+    }
+
+    public double getAnnualSalary() {
+        return annualSalary;
+    }
+
+    public void setAnnualSalary(double annualSalary) {
+        this.annualSalary = annualSalary;
+    }
+    public double payroll(){
+        return getAnnualSalary()/26; // Payable every 2 weeks!
+    }
+
+    @Override
+    public String toString() {
+        return "FullTime{" + super.toString() +
+                "Payroll = " + payroll() +
+                '}';
+    }
+}
+public class PartTime extends Employee implements payroll{
+    private double wage, hoursWorked;
+    public PartTime(String name, double wage, double hoursWorked) {
+        super(name);
+        this.wage = wage;
+        this.hoursWorked = hoursWorked;
+    }
+
+    public double getWage() {
+        return wage;
+    }
+
+    public void setWage(double wage) {
+        this.wage = wage;
+    }
+
+    public double getHoursWorked() {
+        if (hoursWorked < 5) {
+            return 10;
+        }
+        return hoursWorked;
+    }
+
+    public void setHoursWorked(double hoursWorked) {
+        this.hoursWorked = hoursWorked;
+    }
+    public double payroll() {
+        return getHoursWorked() * getWage();
+    }
+
+    @Override
+    public String toString() {
+        return "PartTime{" + super.toString() +
+                "wage=" + wage +
+                ", hoursWorked=" + hoursWorked +
+                ", payroll=" + payroll() +
+                '}';
+    }
+}
+public class Commission extends FullTime implements sales{
+    private double numSales;
+
+    public Commission(String name, double annualSalary, double numSales) {
+        super(name, annualSalary);
+        this.numSales = numSales;
+    }
+
+    public double getNumSales() {
+        return numSales;
+    }
+
+    public void setNumSales(double numSales) {
+        this.numSales = numSales;
+    }
+
+    public double payroll(){
+        return super.payroll() + getCommission();
+    }
+    private double getCommission(){
+        return getNumSales() * commissionPercentage * totalSales;
+    };
+
+    @Override
+    public String toString() {
+        return "Commission{" + super.toString() +
+                "numSales=" + numSales +
+                '}';
+    }
+}
+public class Employee {
+    // ID generator which auto increments the id
+    static private int idGenerator = 0; //makes it universal for all the classes
+    private int ID;
+    private String name;
+
+    public Employee(String name) {
+        this.name = name;
+        ID = ++idGenerator;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                '}';
+    }
+}
+public interface payroll {
+    abstract double payroll();
+}
+interface sales {
+    double totalSales = 300000;
+    double commissionPercentage = 0.07;
+}
