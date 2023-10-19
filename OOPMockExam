@@ -1,0 +1,156 @@
+public class Main{
+    public static void main(String[] args){
+        VehicleManager a1 = new VehicleManager(3);
+        a1.addVehicle(1,404, "Ferrari", "K", 2);
+        a1.addVehicle(2, 90900, "BMW", "F1", false);
+        a1.addVehicle(3, 504968, "Audi", "Covid", 4, false, false);
+        a1.addVehicle(4, 0, "Lambo", "King", true);
+
+        System.out.println(a1.listAllVehicles());
+    }
+}
+public class Vehicle {
+    protected int vehicleIdNumber;
+    protected int mileage;
+    protected String make;
+    protected String model;
+
+    public Vehicle(int vin, int mileage, String make, String model){
+        vehicleIdNumber = vin;
+        this.mileage = mileage;
+        this.make = make;
+        this.model = model;
+    }
+    public int getVehicleIdNum(){ return vehicleIdNumber;}
+    public int getMileage(){return mileage;}
+    public String getMake(){return make;}
+    public String getModel(){return model;}
+
+    @Override
+    public String toString(){
+        String s = "Vehicle ID Num: " + vehicleIdNumber;
+        s += "\nMileage: " + mileage;
+        s += "\nMake: " + make;
+        s += "\nModel: " + model;
+        return s;
+    }
+}
+public class Car extends Vehicle{
+    protected int seats;
+
+    public Car(int vin, int mileage, String make, String model, int seats){
+        super(vin, mileage, make, model);
+        this.seats = seats;
+    }
+    public int getSeats(){return seats;};
+
+    @Override
+    public String toString(){
+        String s = super.toString();
+        s += "\nSeats: " + seats;
+        return s;
+    }
+}
+public class HatchBack extends Car{
+    private boolean foldableSeats;
+
+    public HatchBack(int vin, int mileage, String make, String model, int seats, boolean foldable){
+        super(vin, mileage, make, model, seats);
+        foldableSeats = foldable;
+    }
+    public boolean hasFoldableSeats(){return foldableSeats;};
+
+    @Override
+    public String toString(){
+        String s = super.toString();
+        s += "\nFoldable Seats: " + foldableSeats;
+        return s;
+    }
+}
+public class Sedan extends Car{
+    private boolean backSeatFridge;
+    private boolean backSeatRecliner;
+
+    public Sedan(int vin, int mileage, String make, String model, int seats, boolean fridge, boolean recliner){
+        super(vin, mileage, make, model, seats);
+        backSeatFridge = fridge;
+        backSeatRecliner = recliner;
+    }
+    public boolean hasFridge(){return backSeatFridge;}
+    public boolean hasRecliner(){return backSeatRecliner;}
+
+    @Override
+    public String toString(){
+        String s = super.toString();
+        s += "\nFridge: " + backSeatFridge;
+        s += "\nRecliner: " + backSeatRecliner;
+        return s;
+    }
+}
+public class Boat extends Vehicle{
+    private boolean radar;
+
+    public Boat(int vin, int mileage, String make, String model, boolean radar){
+        super(vin, mileage, make, model);
+        this.radar = radar;
+    }
+    public boolean hasRadar(){return radar;}
+
+    @Override
+    public String toString(){
+        String s = super.toString();
+        s += "\nRadar: " + radar;
+        return s;
+    }
+}
+public class VehicleManager {
+    private int numVehicles;
+    private int maxVehicles;
+    private Vehicle[] vehicleList;
+
+    public VehicleManager(int max){
+        numVehicles = 0;
+        maxVehicles = max;
+        vehicleList = new Vehicle[max];
+    }
+    public boolean addVehicle(int vin, int mileage, String make, String model, int seats){
+        if (numVehicles < maxVehicles){
+            vehicleList[numVehicles] = new Car(vin, mileage, make, model, seats);
+            numVehicles++;
+            return true;
+        }
+        return false;
+    }
+    public boolean addVehicle(int vin, int mileage, String make, String model, int seats, boolean foldableSeats){
+        if (numVehicles < maxVehicles){
+            vehicleList[numVehicles] = new HatchBack(vin, mileage, make, model, seats, foldableSeats);
+            numVehicles++;
+            return true;
+        }
+        return false;
+    }
+    public boolean addVehicle(int vin, int mileage, String make, String model, int seats, boolean fridge, boolean recliner){
+        if (numVehicles < maxVehicles){
+            vehicleList[numVehicles] = new Sedan(vin, mileage, make, model, seats, fridge, recliner);
+            numVehicles++;
+            return true;
+        }
+        return false;
+    }
+    public boolean addVehicle(int vin, int mileage, String make, String model, boolean radar){
+        if (numVehicles < maxVehicles){
+            vehicleList[numVehicles] = new Boat(vin, mileage, make, model, radar);
+            numVehicles++;
+            return true;
+        }
+        return false;
+    }
+    public String listAllVehicles(){
+        String s = "------ List of vehicles ------";
+        for (int i = 0; i < numVehicles; i++){
+            s += "\n\n";
+            s +=  vehicleList[i].toString();
+        }
+        return s;
+    }
+}
