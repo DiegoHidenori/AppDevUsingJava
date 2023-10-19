@@ -1,0 +1,83 @@
+import java.util.Scanner;
+
+public class Main{
+    public static void main(String[] args){
+        System.out.println("-------Lecture Week 2-------");
+        // Mainly about user input and data types and type conversions
+        System.out.print("Enter string: ");
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+        System.out.println(userInput);
+
+        // identifiers are names given to code elements (variables, functions, classes, etc.)
+        // Conversion rules: If one operand is double, float, long, the other converts to double, float, or long too.
+
+        int number1 = (int)3.0;
+        System.out.println(number1); // Outputs 3
+        int number2 = (int)3.9;
+        System.out.println(number2); // Outputs 3. Gets truncated, not rounded
+
+        scanner.close();
+
+        System.out.println("-------Lab Week 2-------");
+
+        // Array is a collection of same type data in sequence
+        // It's a most commonly used data structure to store and retrieve data
+
+        int[] a = {3,4,5,6};
+
+        // How do we iterate through the array a?
+        for(int i = 0; i < a.length; i++) { // Python doesn't have this. This has more control. i.e., Printing only 1,3,5,....
+            System.out.printf("a[%d] = %d\n", i, a[i]);
+        }
+        for(int num: a) { // This is an iterator. This is simpler and always runs each and every index
+            System.out.println(num);
+        }
+
+        // How to declare an empty array of double?
+        double[] m = new double[5]; // Array declaration requires a fixed size
+        boolean[] x = new boolean[3];
+        char[] a1 = new char[2];
+
+        System.out.println(m[0]); // Numeric array default is 0.0
+        System.out.println(x[0]); // Boolean default is false
+        System.out.println(a1[0]); // Char default is null
+
+        // Interview question: What is a parallel Array?
+        // - Arrays that have the same size and each cell of an array is correlated with other cells
+        int studentID[] = {101010123,101123124,1012345};
+        String studentName[] = {"Diego", "Nelson", "Albert"};
+
+        String content[] = {"Assignment 1", "Assignment 2", "Lab Test 1", "Lab Test 2", "Midterm", "Final"};
+        float[] weight = {0.10f,0.15f,0.1f,0.1f,0.20f,0.25f};
+
+        float marks[][] = { // This behaves like an Excel table (rows and columns)
+                {100,100,80,85,50,70},
+                {100,90,80,90,20,80},
+                {45,40,25,60,79,90}
+        };
+        System.out.println("The length is " + marks.length);
+        System.out.println("The length of array 0 is " + marks[0].length);
+
+        for(int i = 0; i < studentID.length; i++){ // For using parallel arrays, it's better to use for loop with index (more control)
+            System.out.printf("Student ID: %d, Name: %s\n", studentID[i], studentName[i]);
+            float sum = 0;
+            for(int j = 0; j < content.length; j++){ // Can put content.length instead of marks[i].length
+                System.out.printf("%s -----> %.2f\n", content[j], marks[i][j]);
+                System.out.printf("(Weighted) %s ----------> %.2f\n", content[j], marks[i][j]*weight[j]);
+                sum += marks[i][j]*weight[j];
+            }
+            System.out.println("Final grade is " + sum);
+            System.out.println("\n");
+        }
+        System.out.println("-----------------------------");
+
+//        double sum = 0;// This part is not needed. Shorten code by adding it while the last for loop is running
+//        for(float mark: marks) sum += mark;
+
+//        System.out.printf("The class avg is %.2f\n", (sum / marks.length));
+
+
+        System.out.println("The length of a is " + a.length);
+    }
+}
