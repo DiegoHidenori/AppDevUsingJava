@@ -1,0 +1,125 @@
+import java.util.Scanner;
+
+// Press ⇧ twice to open the Search Everywhere dialog and type `show whitespaces`,
+// then press Enter. You can now see whitespace characters in your code.
+public class Main {
+    public static void main(String[] args) {
+        // 8 primitive types
+        // byte, short, int, long, float, double
+        // char, boolean
+
+        // whole number -> [int], sometimes: long
+        // fraction number -> [double] , sometimes: float
+
+        int number1;
+        number1 = 3;
+        number1 = 6;
+
+        // 4 is integer literal
+        long number2 = 4;
+
+        // explicitly declare long value - long literal
+        long number3 = 4L;
+
+        // this assignment is wrong
+        // int number4 = 5L;
+
+        // 4.5 is a double literal
+        double decimal1 = 4.5;
+
+        float decimal2 = 4.5f;
+
+        // char
+        char a = 'a';
+        boolean isChecked = true;
+
+        // constants
+        final int RATE;
+        RATE = 5;
+
+        // I cannot reassign it again
+        // rate = 6;
+
+        // exercise: write a program to calculate the area of a circle:
+        // radius = 5
+        // PI = 3.14
+        // Math
+        // Math.PI, Math.pow()
+        double radius = 5;
+        System.out.println(radius);
+        double area = Math.pow(radius, 2) * Math.PI;
+        System.out.println("the area of a circle of a radius: " + radius + " is " + area);
+        System.out.printf("the area of a circle of a radius: " + radius + " is %.2f", area);
+
+
+        /***************************/
+        System.out.println();
+        // we want to take radius from user
+        // Scanner
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please provide the radius of the circle: ");
+        double radius1 = input.nextDouble();
+        area = Math.pow(radius1, 2) * Math.PI;
+        System.out.printf("the area of a circle of a radius: " + radius1 + " is %.2f", area);
+
+        /**
+         * exercise 2:
+         * convert fahrenheit to celsius
+         * take fahrenheit as an input and then calculate the equivalent in celsius
+         * celsius = (fahrenheit - 32) * 5/9
+         * */
+
+        System.out.println("\n\n\n");
+        System.out.println("Please insert your fahrenheit degree: ");
+        double fh = input.nextDouble();
+        double celsius = (fh - 32) * 5/9;
+        System.out.printf("the celsius equivalent of " + fh + "f is %.3f degree", celsius);
+
+
+        /**
+         * exercise 3:
+         * circle has an origin (x, y)
+         * radius - taking from user
+         * take another point (x2, y2) from the user and check if the point is in/on the circle
+         * or out of the circle
+         *
+         * origin = (0, 0)
+         * radius = 5
+         * point = (2, 3)
+         * */
+
+        // distance between two points (x1, y1) & (x2, y2): sqrt ( (x2 - x1)^2 + (y2 - y1)^2 )
+
+        System.out.println();
+        System.out.println("*****************");
+
+        System.out.println("insert the x coordinate of origin: ");
+        double oX = input.nextDouble();
+
+        System.out.println("insert the y coordinate of origin: ");
+        double oY = input.nextDouble();
+
+        System.out.println("insert the radius of a circle: ");
+        double r = input.nextDouble();
+
+        System.out.println("insert the x coordinate of point: ");
+        double pX = input.nextDouble();
+
+        System.out.println("insert the y coordinate of point: ");
+        double pY = input.nextDouble();
+
+        double distance = Math.sqrt(Math.pow((oX - pX), 2) + Math.pow((oY - pY), 2));
+        if (distance > r) {
+            System.out.println("the point is outside of the circle");
+        } else {
+            System.out.println("the point is in or on the circle");
+        }
+
+
+
+
+
+
+
+    }
+}
