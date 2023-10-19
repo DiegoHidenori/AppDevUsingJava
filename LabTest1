@@ -1,1 +1,61 @@
+import java.util.Random;
+public class Main {
+    public static void main(String[] args) {
+        int[][] array = new int[5][5];
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                int random = new Random().nextInt(24) + 1;
+                array[i][j] = random;
+            }
+        }
+        System.out.println("Display Area: ");
+        displayArea(array);
+        System.out.println("\nRow Sum: ");
+        rowSum(array);
+        System.out.println("\nColumn Sum: ");
+        columnSum(array);
+        System.out.println("\nMin Max Rows: ");
+        maxMinEachRow(array);
+    }
+    public static int[][] displayArea(int[][] array) {
+        return array;
+    }
 
+    public static void rowSum(int[][] array) {
+        //int[] rowSum = new int[5];
+        //int[] rowSumList = new int[5];
+        int sum;
+        for (int i = 0; i < 5; i++) {
+            sum = 0;
+            for (int j = 0; j < 5; j++) {
+                sum += array[i][j];
+            }
+            System.out.println(sum);
+        }
+    }
+    public static void columnSum(int[][] array) {
+        int sum;
+        for (int i = 0; i < 5; i++) {
+            sum = 0;
+            for (int j = 0; j < 5; j++) {
+                sum += array[j][i];
+            }
+            System.out.println(sum);
+        }
+    }
+    public static void diagonalSum(int[][] array) {
+        
+    }
+    public static void maxMinEachRow(int[][] array) {
+        int max = 0;
+        for (int i = 0; i < 5; i++) {
+            max = 0;
+            for (int j = 0; j < 5; j++) {
+                if (array[i][j] > max) {
+                    max = array[i][j];
+                }
+            }
+            System.out.println(max);
+        }
+    }
+}
